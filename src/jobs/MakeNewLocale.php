@@ -14,7 +14,7 @@ use DB;
 
 class MakeNewLocale implements ShouldQueue
 {
-    
+
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     protected $data;
     public $tries = 3;
@@ -46,10 +46,11 @@ class MakeNewLocale implements ShouldQueue
         $data =  DB::table('translation_db')->select('id', 'group', 'key', $this->data['from_lang'])->get();
         $translate = new CloudTranslate();
         foreach ($data as $value) {
-            dd($value->$this->data['from_lang']);
-            $result[$to_lang] = $translate->translate($value->$this->data['from_lang'], $from_lang, $to_lang);
-            dd($result);
-            Translations::whereId($value['id'])->update(['text' => $value['text']]);
+            $text = $this->data['from_lang'];
+            if (@$value->$text) {
+                $result[$to_lang] = $translate->translate($value->$text, $from_lang, $to_lang);
+                DB::table('translation_db')->where('id', $value->id)->update($result);
+            }
         }
         DB::table('translate_language_isocode')->where('iso_code',$request_data['to_lang'])->where('used','=',0)->update(['used' => 1]);
     }

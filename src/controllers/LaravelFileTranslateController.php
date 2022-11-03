@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Hms2Go\Http\Controllers\Controller;
 use ProcessDrive\LaravelFileTranslate\CloudTranslate;
+use ProcessDrive\LaravelFileTranslate\jobs\MakeNewLocale;
 use DB;
 use DataTables;
 
@@ -64,6 +65,12 @@ class LaravelFileTranslateController extends Controller
             ->rawColumns(['action'])
             ->make(true);
       }
+   }
+
+   public function storeNewLanguage(Request $request)
+   {
+      MakeNewLocale::dispatch($request->all())->delay(now()->addSeconds(1));
+      return true;
    }
 
    public function checkLang($locale)
