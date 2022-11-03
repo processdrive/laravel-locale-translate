@@ -52,18 +52,55 @@ class LaravelFileRetriveDbValueCommand extends Command
 
     public function getDbValue()
     {
-       $get_db_value = (DB::table('translation_db')->select('key','en','no')->get()->groupBY('group')->toArray());
-
-    //    dd($get_db_value);
-
-       
-       $table_column = [];
-
-       foreach (Schema::getColumnListing('translation_db') as $value) {
-            if($value != 'group' && $value != 'id' && $value != 'key') {
-                $table_column[$value] = $value;
+       $db_value  = $this->tableData();
+       $db_column = $this->tableColumn();
+       foreach ($db_value as $row_data) {
+            foreach ($db_column as $column) {
+                $this->writeFile($row_data, $column);
             }
        }
-    //    dd($table_column);
     }
+
+    public function writeFile($row, $column)
+    {
+        $path = $this->mkdirAndmkFile($row->group, $column);
+        dd(require($path));
+        // dd($read_file, $row, $column);
+    }
+
+    public function mkdirAndmkFile($group, $column)
+    {
+        $path = resource_path('lang/'.$column);
+        if (!is_dir($path)) {
+            mkdir($path, 0775);
+        }
+        chmod($path, 0775);
+        if (!file_exists($path.'/'.$group.'.php')) {
+            fopen($path.'/'.$group.'.php', 'w');
+        }
+        return $path.'/'.$group.'.php';
+    }
+
+    public function tableData()
+    {
+       $query = DB::table('translation_db')->select('group', 'key');
+       foreach (Schema::getColumnListing('translation_db') as $value) {
+            if($value != 'group' && $value != 'id' && $value != 'key' && $value != 'created_at' && $value != 'updated_at' && $value != 'deleted_at') {
+                $query = $query->addSelect($value);
+            }
+       }
+       return $query->get()->toArray();
+    }
+
+    public function tableColumn()
+    {
+       $column = [];
+       foreach (Schema::getColumnListing('translation_db') as $value) {
+            if($value != 'group' && $value != 'id' && $value != 'key' && $value != 'created_at' && $value != 'updated_at' && $value != 'deleted_at') {
+                $column[$value] = $value;
+            }
+       }
+       return $column;
+    }
+
 }
