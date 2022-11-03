@@ -14,6 +14,7 @@ use DB;
 
 class MakeNewLocale implements ShouldQueue
 {
+    
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     protected $data;
     public $tries = 3;
