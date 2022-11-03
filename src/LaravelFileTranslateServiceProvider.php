@@ -10,6 +10,7 @@ class LaravelFileTranslateServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/database/migrations');
         $this->commands([
             LaravelFileTranslateDbStoreCommand::class,
+            LaravelFileRetriveDbValueCommand::class,
         ]);
         $this->loadViewsFrom(__DIR__.'/views', 'LaravelFileTranslate');
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
