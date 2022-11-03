@@ -52,6 +52,6 @@ class MakeNewLocale implements ShouldQueue
                 DB::table('translation_db')->where('id', $value->id)->update($result);
             }
         }
-        DB::table('translate_language_isocode')->where('iso_code',$request_data['to_lang'])->where('used','=',0)->update(['used' => 1]);
+        DB::table('translate_language_isocode')->where('iso_code', $to_lang)->where('used','=',0)->update(['used' => 1]);
     }
 }

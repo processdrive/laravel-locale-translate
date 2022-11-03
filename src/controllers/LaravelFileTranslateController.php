@@ -52,7 +52,7 @@ class LaravelFileTranslateController extends Controller
    {
       if ($request->ajax()) {
          $language = $request->get('lang');
-         $data =  DB::table('translation_db')->select('id', 'group', 'key', $language)->get();
+         $data =  DB::table('translation_db')->select('id', 'group', 'key', $language)->where($language, '!=', null)->get();
          return Datatables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function($row){
