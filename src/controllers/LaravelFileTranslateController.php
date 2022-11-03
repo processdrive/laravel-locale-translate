@@ -16,7 +16,7 @@ class LaravelFileTranslateController extends Controller
    {
       $data['language'] = DB::table('translate_language_isocode')->where('used', 1)->get()->pluck('name', 'iso_code')->toArray();
       $data['new_lang'] = DB::table('translate_language_isocode')->where('used', 0)->get()->pluck('name', 'iso_code')->toArray();
-      return view('LaravelFileTranslate::translate')->with($data);
+      return view('LaravelFileTranslate::master')->with($data);
    }
 
    public function store(Request $request)
