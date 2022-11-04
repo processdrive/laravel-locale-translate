@@ -13,6 +13,6 @@ class CloudTranslate {
     public function translate ($text, $translate_from, $translate_to){
         $result   = file_get_contents("https://translate.googleapis.com/translate_a/single?client=gtx&ie=UTF-8&oe=UTF-8&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&dt=at&sl=".$translate_from."&tl=".$translate_to."&hl=hl&q=".urlencode($text), $_SERVER['DOCUMENT_ROOT']."/transes.html");
         $result   = json_decode($result);
-        return str_replace('"', '', $result[0][0][0]);
+        return $result[0][0][0];
     }
 }

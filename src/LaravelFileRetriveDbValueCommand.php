@@ -8,6 +8,7 @@ use ProcessDrive\LaravelCloudTranslation\Models\Translations;
 use DB;
 use Cache;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Arr;
 
 class LaravelFileRetriveDbValueCommand extends Command
 {
@@ -54,23 +55,24 @@ class LaravelFileRetriveDbValueCommand extends Command
     {
        $db_value  = $this->tableData();
        $db_column = $this->tableColumn();
-       foreach ($db_value as $row_data) {
+       foreach ($db_value as $row_no => $row_data) {
             foreach ($db_column as $column) {
                 $this->writeFile($row_data, $column);
             }
+        $this->info("No of rows $row_no is completed.");
        }
     }
 
     public function writeFile($row, $column)
     {
+        $tex = [];
         $path       = $this->mkdirAndmkFile($row->group, $column);
-        // dd(file_get_contents($path));
         $file_data  = require($path);
         if (!is_array($file_data)) {
             $file_data = [];
         }
         if (stripos($row->key, '.')) {
-            $this->assignArrayByPath($file_data, $row->key, $row->$column);
+            Arr::set($file_data, $row->key, $row->$column);
         } else {
             $file_data[$row->key] = $row->$column;
         }
@@ -95,14 +97,6 @@ class LaravelFileRetriveDbValueCommand extends Command
             }
         }
         return $result;
-    }
-
-    function assignArrayByPath(&$arr, $path, $value, $separator='.') {
-        $keys = explode($separator, $path);
-        foreach ($keys as $key) {
-            $arr = &$arr[$key];
-        }
-        $arr = $value;
     }
 
     public function mkdirAndmkFile($group, $column)
