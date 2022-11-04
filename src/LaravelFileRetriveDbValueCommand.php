@@ -63,9 +63,46 @@ class LaravelFileRetriveDbValueCommand extends Command
 
     public function writeFile($row, $column)
     {
-        $path = $this->mkdirAndmkFile($row->group, $column);
-        dd(require($path));
-        // dd($read_file, $row, $column);
+        $path       = $this->mkdirAndmkFile($row->group, $column);
+        // dd(file_get_contents($path));
+        $file_data  = require($path);
+        if (!is_array($file_data)) {
+            $file_data = [];
+        }
+        if (stripos($row->key, '.')) {
+            $this->assignArrayByPath($file_data, $row->key, $row->$column);
+        } else {
+            $file_data[$row->key] = $row->$column;
+        }
+        $this->createContent($file_data, $path);
+    }
+
+    public function createContent($write_array, $path)
+    {
+        $array_content = "<?php\n\n return [\n\t".$this->makeFileContent($write_array)."];\n";
+        fopen($path, 'w');
+        file_put_contents($path, $array_content);
+    }
+
+    public function makeFileContent($array, $is_array = false)
+    {
+        $result = '';
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $result .= "\"$key\" => [\n\t". $this->makeFileContent($value, true)."],\n";
+            } else {
+                $result .= "\"$key\" => \"$value\",\n\t";
+            }
+        }
+        return $result;
+    }
+
+    function assignArrayByPath(&$arr, $path, $value, $separator='.') {
+        $keys = explode($separator, $path);
+        foreach ($keys as $key) {
+            $arr = &$arr[$key];
+        }
+        $arr = $value;
     }
 
     public function mkdirAndmkFile($group, $column)
