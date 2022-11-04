@@ -93,7 +93,8 @@ class LaravelFileRetriveDbValueCommand extends Command
             if (is_array($value)) {
                 $result .= "\"$key\" => [\n\t". $this->makeFileContent($value, true)."],\n";
             } else {
-                $result .= "\"$key\" => \"$value\",\n\t";
+                $text = addslashes($value);
+                $result .= "\"$key\" => \"$text\",\n\t";
             }
         }
         return $result;
