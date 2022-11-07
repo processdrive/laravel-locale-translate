@@ -2,6 +2,7 @@
 namespace ProcessDrive\LaravelFileTranslate;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Artisan;
 
 class LaravelFileTranslateServiceProvider extends ServiceProvider
 {
