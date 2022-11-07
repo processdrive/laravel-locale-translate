@@ -74,6 +74,12 @@
             $('.select2').select2();
             $.fn.modal.Constructor.prototype._enforceFocus = function() {};
             loadDataTable();
+            var load = "{{ $load }}";
+            if (load) {
+                $.blockUI({ message: '<span>Please wait a min. your language is convert to google translate.<span>'});
+            } else {
+                $.unblockUI(); 
+            }
 
         });
         function loadDataTable () {
@@ -223,8 +229,6 @@
                 data: {to_lang : document.getElementById('new_lang').value, from_lang : sessionStorage.getItem("translation_table") ?? "{{ array_keys($language)[0] }}"}
             }).done((data) =>{
                 if (data) {
-                    $.unblockUI(); 
-                    location.reload()
                 }
             });
         }
