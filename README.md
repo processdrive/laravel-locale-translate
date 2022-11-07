@@ -5,7 +5,7 @@
 [![Latest Stable Version](http://poser.pugx.org/process-drive/laravel-cloud-translation/v)](https://packagist.org/packages/process-drive/laravel-cloud-translation) [![Total Downloads](http://poser.pugx.org/process-drive/laravel-cloud-translation/downloads)](https://packagist.org/packages/process-drive/laravel-cloud-translation) [![Latest Unstable Version](http://poser.pugx.org/process-drive/laravel-cloud-translation/v/unstable)](https://packagist.org/packages/process-drive/laravel-cloud-translation) [![License](http://poser.pugx.org/process-drive/laravel-cloud-translation/license)](https://packagist.org/packages/process-drive/laravel-cloud-translation) [![PHP Version Require](http://poser.pugx.org/process-drive/laravel-cloud-translation/require/php)](https://packagist.org/packages/process-drive/laravel-cloud-translation)
 
 
-ProcessDrive laravel local translate
+ProcessDrive laravel locale translate
 =============================================
   This pacakage is used for store your locale file in database and use. Then you can directly update and store languages. if you wants to create new language you can directly mention this package. it will translate and store the values.
 
