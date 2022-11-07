@@ -4,7 +4,7 @@ namespace ProcessDrive\LaravelFileTranslate\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use Hms2Go\Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
 use ProcessDrive\LaravelFileTranslate\CloudTranslate;
 use ProcessDrive\LaravelFileTranslate\jobs\MakeNewLocale;
 use DB;
