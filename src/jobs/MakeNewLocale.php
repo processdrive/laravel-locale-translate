@@ -54,5 +54,6 @@ class MakeNewLocale implements ShouldQueue
         }
         DB::table('translate_language_isocode')->where('iso_code', $to_lang)->where('used','=',0)->update(['used' => 1]);
         \Artisan::call('translate:dbtofile');
+        DB::table('translation_load')->truncate();
     }
 }
