@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Hms2Go\Http\Controllers\Controller;
 use ProcessDrive\LaravelFileTranslate\CloudTranslate;
+use ProcessDrive\LaravelFileTranslate\jobs\MakeNewLocale;
 use DB;
 use DataTables;
 
@@ -16,7 +17,7 @@ class LaravelFileTranslateController extends Controller
    {
       $data['language'] = DB::table('translate_language_isocode')->where('used', 1)->get()->pluck('name', 'iso_code')->toArray();
       $data['new_lang'] = DB::table('translate_language_isocode')->where('used', 0)->get()->pluck('name', 'iso_code')->toArray();
-      return view('LaravelFileTranslate::translate')->with($data);
+      return view('LaravelFileTranslate::master')->with($data);
    }
 
    public function store(Request $request)
@@ -51,7 +52,7 @@ class LaravelFileTranslateController extends Controller
    {
       if ($request->ajax()) {
          $language = $request->get('lang');
-         $data =  DB::table('translation_db')->select('id', 'group', 'key', $language)->get();
+         $data =  DB::table('translation_db')->select('id', 'group', 'key', $language)->where($language, '!=', null)->get();
          return Datatables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function($row){
@@ -64,6 +65,12 @@ class LaravelFileTranslateController extends Controller
             ->rawColumns(['action'])
             ->make(true);
       }
+   }
+
+   public function storeNewLanguage(Request $request)
+   {
+      MakeNewLocale::dispatch($request->all())->delay(now()->addSeconds(1));
+      return true;
    }
 
    public function checkLang($locale)

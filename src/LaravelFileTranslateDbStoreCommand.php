@@ -60,7 +60,7 @@ class LaravelFileTranslateDbStoreCommand extends Command
                         $table->text($folder)->after('key')->nullable();
                     });
                 }
-                $find_iso = DB::table('translate_language_isocode')->where('iso_code',$folder)->where('used','=',0);
+                $find_iso = DB::table('translate_language_isocode')->where('iso_code',$folder);
                 if (@$find_iso->first()) {
                     $find_iso->update(['used' => 1]);
                 } else {
