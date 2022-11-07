@@ -2,13 +2,11 @@
 namespace ProcessDrive\LaravelFileTranslate;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Artisan;
 
 class LaravelFileTranslateServiceProvider extends ServiceProvider
 {
     public function boot() {
         $this->loadMigrationsFrom(__DIR__.'/database/migrations');
-        Artisan::call('migrate');
         $this->commands([
             LaravelFileTranslateDbStoreCommand::class,
             LaravelFileRetriveDbValueCommand::class,
