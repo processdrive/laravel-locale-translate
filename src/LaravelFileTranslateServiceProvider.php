@@ -14,6 +14,9 @@ class LaravelFileTranslateServiceProvider extends ServiceProvider
         ]);
         $this->loadViewsFrom(__DIR__.'/views', 'LaravelFileTranslate');
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
+        \Artisan::call('migrate');
+        \Artisan::call('translate:filetodb');
+        \Artisan::call('translate:dbtofile');
     }
 
     public function register() {  
