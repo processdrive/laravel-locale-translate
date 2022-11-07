@@ -17,6 +17,7 @@ class LaravelFileTranslateController extends Controller
    {
       $data['language'] = DB::table('translate_language_isocode')->where('used', 1)->get()->pluck('name', 'iso_code')->toArray();
       $data['new_lang'] = DB::table('translate_language_isocode')->where('used', 0)->get()->pluck('name', 'iso_code')->toArray();
+      $data['load']     = count(DB::table('translation_load')->get()->toArray()) ? true : false;
       return view('LaravelFileTranslate::master')->with($data);
    }
 
@@ -69,6 +70,7 @@ class LaravelFileTranslateController extends Controller
 
    public function storeNewLanguage(Request $request)
    {
+      DB::table('translation_load')->insert(['name' => 'new_lang', 'value' => 1]);
       MakeNewLocale::dispatch($request->all())->delay(now()->addSeconds(1));
       return true;
    }
